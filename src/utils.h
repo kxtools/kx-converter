@@ -1,11 +1,13 @@
 #pragma once
 
-#include <iostream>
 #include <fstream>
+#include <Windows.h>
+#include <iostream>
 #include "spdlog/spdlog.h"
 
 namespace Utils
 {
+	static int formatError = 0;
 	inline bool ExistsFile(const std::string fileName)
 	{
 		std::ifstream file;
@@ -33,7 +35,7 @@ namespace Utils
 			getline(file, line);
 		}
 		file.close();
-		return currentLine;
+		return currentLine - 1;
 	}
 
 	inline bool ReadLine(const std::string fileName, int lineNum, std::string& outLine)
@@ -87,32 +89,41 @@ namespace Utils
 
 		while (!file.eof())
 		{
-			currentLine++;
+			if (currentLine >= maxLines) break;
 			getline(file, lines[currentLine]);
+			currentLine++;
 		}
 		file.close();
 		return lines;
 	}
 
-	inline std::vector<std::string> split(const std::string& str, const std::string& delim)
-	{
-		std::vector<std::string> tokens;
-		size_t prev = 0, pos = 0;
-		do
-		{
-			pos = str.find(delim, prev);
-			std::string token = str.substr(prev, pos - prev);
-			if (!token.empty()) tokens.push_back(token);
-			prev = pos + delim.length();
+	inline std::vector<std::string> split(std::string phrase, std::string delimiter) {
+		std::vector<std::string> list;
+		std::string s = std::string(phrase);
+		size_t pos = 0;
+		std::string token;
+		while ((pos = s.find(delimiter)) != std::string::npos) {
+			token = s.substr(0, pos);
+			list.push_back(token);
+			s.erase(0, pos + delimiter.length());
 		}
-		while (pos < str.length() && prev < str.length());
-		return tokens;
+		list.push_back(s);
+		return list;
 	}
 
-	inline std::vector<double> GetPosition(const std::string line)
+	inline std::vector<double> GetPosition(const std::string line, const std::string file)
 	{
-		const std::vector<std::string> splitters = split(line, " ");
+		// Fixes possible problem with \t + If it's Saltwater Fish and not Saltwater_Fish fuck
+		const std::vector<std::string> lineSplit = split(line, "\t");
 		std::vector<double> outVec(3);
+		if (lineSplit.size() <= 1 )
+		{
+			spdlog::critical("{}, {}", line, file);
+			formatError++;
+			spdlog::error("{}", formatError);
+			return outVec;
+		}
+		const std::vector<std::string> splitters = split(lineSplit[1], " ");
 		if (!splitters.empty())
 		{
 			for (size_t i = 1; i < splitters.size(); i++)
@@ -155,5 +166,14 @@ namespace Utils
 			outStr.append(" ");
 		}
 		return outStr;
+	}
+
+	inline std::vector<std::string> GetFilesInDirectory(const std::string& directory)
+	{
+		std::vector<std::string> out;
+		for (std::filesystem::recursive_directory_iterator i(directory), end; i != end; ++i)
+			if (!is_directory(i->path()))
+				out.push_back(i->path().generic_string());
+		return out;
 	}
 };
