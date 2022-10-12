@@ -1,4 +1,5 @@
 ﻿#include <filesystem>
+#include <chrono>
 #include "utils.h"
 
 int main()
@@ -40,14 +41,30 @@ int main()
 	// D:\downloads\KX Trainer V2\Maps
 	// 4	'Saltwater Fish' 670.26 -1.32 1029.97
 	std::string pathToDirectory;
+	std::string printChangedLinesStr = "n";
+	bool printChangedLines;
 	spdlog::info("Enter the path of the directory: ");
 	std::getline(std::cin, pathToDirectory);
-	std::vector<std::string> test = Utils::GetFilesInDirectory(pathToDirectory);
-	for (const auto fileName : test)
+	if (!std::filesystem::is_directory(pathToDirectory))
 	{
+		spdlog::error("Path '{}' is invalid", pathToDirectory);
+		return 1;
+	}
+
+	spdlog::info("Print changed lines?(y/n): ");
+	std::cin >> printChangedLinesStr;
+	printChangedLines = printChangedLinesStr == "n" ? false : true;
+
+	auto t1 = std::chrono::high_resolution_clock::now();
+	const std::vector<std::string> filesInDir = Utils::GetFilesInDirectory(pathToDirectory);
+	for (const std::string fileName : filesInDir)
+	{
+		if (fileName.find("map_names.json") != std::string::npos)
+			continue;
+
 		// My lines
 		std::vector<std::string> lines = Utils::ReadLines(fileName);
-		for (const auto line : lines)
+		for (const std::string line : lines)
 		{
 			const std::string firstPart = Utils::GetFirstPart(line);
 			const std::vector<double> pos = Utils::GetPosition(line, fileName);
@@ -58,9 +75,13 @@ int main()
 				return 1;
 			const std::string secondPart = Utils::ConvertSecondPart(newPos);
 			const std::string final = firstPart + secondPart;
-			// spdlog::info("{}, {}", final, line);
+			if (printChangedLines)
+				spdlog::info("{}, {}, {}", fileName, final, line);
 		}
 	}
+	auto t2 = std::chrono::high_resolution_clock::now();
+	spdlog::info("Program took {} {} to execute", std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count(),
+	             "seconds");
 	return 0;
 }
 
@@ -73,4 +94,5 @@ int main()
  * TODO: 2. Use classes/namespaces ✅
  * TODO: 3. Make it choose a whole folder ✅
  * TODO: 4. Create a new folder with the changed files
+ * TODO: 5. New methods for scanning/error fixing - Scan char by char - will be slower
 */

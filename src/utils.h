@@ -8,6 +8,7 @@
 namespace Utils
 {
 	static int formatError = 0;
+
 	inline bool ExistsFile(const std::string fileName)
 	{
 		std::ifstream file;
@@ -97,12 +98,14 @@ namespace Utils
 		return lines;
 	}
 
-	inline std::vector<std::string> split(std::string phrase, std::string delimiter) {
+	inline std::vector<std::string> split(std::string phrase, std::string delimiter)
+	{
 		std::vector<std::string> list;
-		std::string s = std::string(phrase);
+		auto s = std::string(phrase);
 		size_t pos = 0;
 		std::string token;
-		while ((pos = s.find(delimiter)) != std::string::npos) {
+		while ((pos = s.find(delimiter)) != std::string::npos)
+		{
 			token = s.substr(0, pos);
 			list.push_back(token);
 			s.erase(0, pos + delimiter.length());
@@ -113,10 +116,11 @@ namespace Utils
 
 	inline std::vector<double> GetPosition(const std::string line, const std::string file)
 	{
-		// Fixes possible problem with \t + If it's Saltwater Fish and not Saltwater_Fish fuck
+		// Fixes possible problem with \t
 		const std::vector<std::string> lineSplit = split(line, "\t");
 		std::vector<double> outVec(3);
-		if (lineSplit.size() <= 1 )
+		// if it's more than two -> there is more \t if it's less than two -> there is either only 1 \t and then 1 thing before and 0 after or there isn't \t
+		if (lineSplit.size() != 2)
 		{
 			spdlog::critical("{}, {}", line, file);
 			formatError++;
@@ -156,7 +160,7 @@ namespace Utils
 		std::string outStr;
 		if (newPos.empty())
 			return outStr;
-		for(const auto i : newPos)
+		for (const auto i : newPos)
 		{
 			// Remove trailing 0s
 			std::string neuPos = std::to_string(i);
