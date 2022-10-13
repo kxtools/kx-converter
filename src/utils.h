@@ -149,6 +149,41 @@ namespace Utils
 		return outVec;
 	}
 
+	inline std::string GetCheckpointName(std::string line)
+	{
+		// Split the checkpoint number from the name and position, 2 elements: num, names & xyz
+		std::string name;
+		const std::vector<std::string> lineSplit = split(line, "\t");
+		if (lineSplit.size() != 2)
+		{
+			spdlog::critical("{}, {}", line);
+			formatError++;
+			spdlog::error("{}", formatError);
+			return name;
+		}
+		// Split by spaces to have 4 elements: name, x, y, z
+		name = split(lineSplit[1], " ")[0];
+		// Remove the ' from the 'name'
+		name.erase(std::remove(name.begin(), name.end(), '\''), name.end());
+
+		return name;
+	}
+
+	inline int GetCheckpoint(std::string line)
+	{
+		// Split the checkpoint number from the name and position, 2 elements: num, names & xyz
+		const std::vector<std::string> lineSplit = split(line, "\t");
+		int checkpoint = std::stoi(lineSplit[0]);
+		if (lineSplit.size() != 2)
+		{
+			spdlog::critical("{}, {}", line);
+			formatError++;
+			spdlog::error("{}", formatError);
+			return checkpoint;
+		}
+		return checkpoint;
+	}
+
 	inline std::string GetFirstPart(const std::string line)
 	{
 		const std::vector<std::string> splitters = split(line, " ");
