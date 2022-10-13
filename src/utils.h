@@ -36,7 +36,7 @@ namespace Utils
 			getline(file, line);
 		}
 		file.close();
-		return currentLine - 1;
+		return currentLine - 1; // ignore last space
 	}
 
 	inline bool ReadLine(const std::string fileName, int lineNum, std::string& outLine)
@@ -214,5 +214,18 @@ namespace Utils
 			if (!is_directory(i->path()))
 				out.push_back(i->path().generic_string());
 		return out;
+	}
+
+	inline bool CreateNewFile(std::string name)
+	{
+		std::fstream file;
+		file.open(name, std::ios::out);
+		if(!file)
+		{
+			spdlog::error("Failed in creating file '{}'", name);
+			return false;
+		}
+		file.close();
+		return true;
 	}
 };
