@@ -38,8 +38,6 @@ int main()
 	//spdlog::info("X: {}, SY: {}, SZ: {}", newPos[0], newPos[1], newPos[2]);
 	//spdlog::info(final);
 
-	// D:\downloads\KX Trainer V2\Maps
-	// 4	'Saltwater Fish' 670.26 -1.32 1029.97
 	std::string pathToDirectory;
 	std::string printChangedLinesStr = "n";
 	bool printChangedLines;
@@ -94,5 +92,5 @@ int main()
  * TODO: 2. Use classes/namespaces ✅
  * TODO: 3. Make it choose a whole folder ✅
  * TODO: 4. Create a new folder with the changed files
- * TODO: 5. New methods for scanning/error fixing - Scan char by char - will be slower
+ * TODO: 5. Change the files to json
 */
