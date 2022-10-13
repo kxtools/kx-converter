@@ -9,9 +9,12 @@ set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 file(GLOB_RECURSE SOURCE "${CMAKE_SOURCE_DIR}/src/*.cpp")
 
 add_subdirectory(libs/spdlog)
-
 find_package(spdlog)
 
-add_executable(${PROJECT_NAME} ${SOURCE})
+set(other_files
+	libs/nlohmann/json.hpp
+)
+
+add_executable(${PROJECT_NAME} ${SOURCE} ${other_files})
 
 target_link_libraries(${PROJECT_NAME} spdlog)
