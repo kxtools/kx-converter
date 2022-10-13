@@ -1,85 +1,113 @@
 ﻿#include <filesystem>
 #include <chrono>
+#include "../libs/nlohmann/json.hpp"
+#include "models.h"
 #include "utils.h"
 
 int main()
 {
-	//std::string fileName;
-	//int lineNum = 0;
-	//
-	//spdlog::info("Enter filename: ");
-	//getline(std::cin, fileName);
-	//if (!Utils::ExistsFile(fileName))
-	//{
-	//	spdlog::error("File '{}' does not exist.", fileName);
-	//	return 1;
-	//}
-	//spdlog::info("Enter line num(1-n): ");
-	//std::cin >> lineNum;
-	//// spdlog::info("File total lines: {}", GetLineSize(fileName));
-	//
-	//std::string outLine;
-	//if (!Utils::ReadLine(fileName, lineNum, outLine))
-	//{
-	//	spdlog::error("Program was unable to execute correctly.");
-	//	return 1;
-	//}
-	//
-	//const std::vector<double> pos = Utils::GetPosition(outLine);
-	//if (pos.empty())
-	//	return 1;
-	//const std::vector<double> newPos = Utils::SwitchYZ(pos);
-	//if (newPos.empty())
-	//	return 1;
-	//const std::string firstPart = Utils::GetFirstPart(outLine);
-	//const std::string secondPart = Utils::ConvertSecondPart(newPos);
-	//const std::string final = firstPart + secondPart;
-	//spdlog::info("X: {}, Y: {}, Z: {}", pos[0], pos[1], pos[2]);
-	//spdlog::info("X: {}, SY: {}, SZ: {}", newPos[0], newPos[1], newPos[2]);
-	//spdlog::info(final);
-
-	std::string pathToDirectory;
-	std::string printChangedLinesStr = "n";
-	bool printChangedLines;
-	spdlog::info("Enter the path of the directory: ");
-	std::getline(std::cin, pathToDirectory);
-	if (!std::filesystem::is_directory(pathToDirectory))
-	{
-		spdlog::error("Path '{}' is invalid", pathToDirectory);
-		return 1;
+	/*
+	 *
+{
+    "name": "example name",
+    "description": "example description",
+    "mapId": 15,
+    "author": "me",
+    "coordinates": [
+        {
+            "name": "example name1",
+            "x": 100.00,
+            "y": 100.00,
+            "z": 100.00
+        },
+        {
+            "name": "example name2",
+            "x": 200.00,
+            "y": 200.00,
+            "z": 200.00
+        },
+        {
+            "name": "example name3",
+            "x": 300.00,
+            "y": 300.00,
+            "z": 300.00
+        }
+    ]
+}
+	json j = {
+		{"name", "example name"},
+		{"coordinates", {{"name", "example name"}, {"x", 100.00}, {"y", 100.00}, {"z", 100.00}}, {{"name", "example name2"}, {"x", 200.00}, {"y", 200.00}, {"z", 200.00}}, {{"name", "example name3"}, {"x", 300.00}, {"y", 300.00}, {"z", 300.00}}}
 	}
+	 */
+	// std::string pathToDirectory;
+	// std::string printChangedLinesStr = "n";
+	// bool printChangedLines;
+	// spdlog::info("Enter the path of the directory: ");
+	// std::getline(std::cin, pathToDirectory);
+	// if (!std::filesystem::is_directory(pathToDirectory))
+	// {
+	// 	spdlog::error("Path '{}' is invalid", pathToDirectory);
+	// 	return 1;
+	// }
+	// 
+	// spdlog::info("Print changed lines?(y/n): ");
+	// std::cin >> printChangedLinesStr;
+	// printChangedLines = printChangedLinesStr == "n" ? false : true;
+	// 
+	// auto t1 = std::chrono::high_resolution_clock::now();
+	// const std::vector<std::string> filesInDir = Utils::GetFilesInDirectory(pathToDirectory);
+	// for (const std::string fileName : filesInDir)
+	// {
+	// 	if (fileName.find("map_names.json") != std::string::npos)
+	// 		continue;
+	// 
+	// 	// My lines
+	// 	std::vector<std::string> lines = Utils::ReadLines(fileName);
+	// 	for (const std::string line : lines)
+	// 	{
+	// 		const std::string firstPart = Utils::GetFirstPart(line);
+	// 		const std::vector<double> pos = Utils::GetPosition(line, fileName);
+	// 		if (pos.empty())
+	// 			return 1;
+	// 		const std::vector<double> newPos = Utils::SwitchYZ(pos);
+	// 		if (newPos.empty())
+	// 			return 1;
+	// 		const std::string secondPart = Utils::ConvertSecondPart(newPos);
+	// 		const std::string final = firstPart + secondPart;
+	// 		if (printChangedLines)
+	// 			spdlog::info("{}, {}, {}", fileName, final, line);
+	// 	}
+	// }
+	// auto t2 = std::chrono::high_resolution_clock::now();
+	// spdlog::info("Program took {} {} to execute", std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count(),
+	//              "seconds");
+	Utils::CreateNewFile("test.json");
+	// nlohmann::json j = {
+	// {"name", "example name"},
+	// {"coordinates", {{"name", "example name"}, {"x", 100.00}, {"y", 100.00}, {"z", 100.00}}, {{"name", "example name2"}, {"x", 200.00}, {"y", 200.00}, {"z", 200.00}}, {{"name", "example name3"}, {"x", 300.00}, {"y", 300.00}, {"z", 300.00}}}
+	// };
 
-	spdlog::info("Print changed lines?(y/n): ");
-	std::cin >> printChangedLinesStr;
-	printChangedLines = printChangedLinesStr == "n" ? false : true;
 
-	auto t1 = std::chrono::high_resolution_clock::now();
-	const std::vector<std::string> filesInDir = Utils::GetFilesInDirectory(pathToDirectory);
-	for (const std::string fileName : filesInDir)
-	{
-		if (fileName.find("map_names.json") != std::string::npos)
-			continue;
+	// nlohmann::json j = nlohmann::json
+	// {
+	// 	{"name", "Example name"},
+	// 	{"Coordinates", result},
+	// 	{"test", "1"}
+	// };
+	nlohmann::ordered_json result = nlohmann::json::array();
+	std::vector<Models::Coordinates> coords;
+	nlohmann::ordered_json finalJson;
 
-		// My lines
-		std::vector<std::string> lines = Utils::ReadLines(fileName);
-		for (const std::string line : lines)
-		{
-			const std::string firstPart = Utils::GetFirstPart(line);
-			const std::vector<double> pos = Utils::GetPosition(line, fileName);
-			if (pos.empty())
-				return 1;
-			const std::vector<double> newPos = Utils::SwitchYZ(pos);
-			if (newPos.empty())
-				return 1;
-			const std::string secondPart = Utils::ConvertSecondPart(newPos);
-			const std::string final = firstPart + secondPart;
-			if (printChangedLines)
-				spdlog::info("{}, {}, {}", fileName, final, line);
-		}
-	}
-	auto t2 = std::chrono::high_resolution_clock::now();
-	spdlog::info("Program took {} {} to execute", std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count(),
-	             "seconds");
+	coords.push_back(Models::Coordinates{ "example name", 1, 1, 1 });
+	Models::vector_to_json(result, coords);
+	Models::Map newMap;
+	newMap.coords = result;
+	newMap.name = "Example name";
+
+	Models::to_json(finalJson, newMap);
+
+	std::ofstream f("test.json", std::ios_base::trunc | std::ios_base::out);
+	f << std::setw(4) << finalJson << std::endl;
 	return 0;
 }
 
