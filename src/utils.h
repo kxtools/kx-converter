@@ -227,7 +227,7 @@ namespace Utils
 	{
 		std::fstream file;
 		file.open(name, std::ios::out);
-		if(!file)
+		if (!file)
 		{
 			spdlog::error("Failed in creating file '{}'", name);
 			return false;
