@@ -9,18 +9,6 @@ namespace Utils
 {
 	static int formatError = 0;
 
-	inline bool ExistsFile(const std::string fileName)
-	{
-		std::ifstream file;
-		file.open(fileName);
-		if (file.fail())
-		{
-			file.close();
-			return false;
-		}
-		file.close();
-		return true;
-	}
 
 	inline int GetLineSize(const std::string fileName)
 	{
@@ -98,6 +86,7 @@ namespace Utils
 		return lines;
 	}
 
+
 	inline std::vector<std::string> split(std::string phrase, std::string delimiter)
 	{
 		std::vector<std::string> list;
@@ -113,6 +102,14 @@ namespace Utils
 		list.push_back(s);
 		return list;
 	}
+
+	inline void RemoveString(std::string& str, std::string toRemove)
+	{
+		std::string::size_type i = str.find(toRemove);
+		if (i != std::string::npos)
+			str.erase(i, toRemove.length());
+	}
+
 
 	inline std::vector<double> GetPosition(const std::string line, const std::string file)
 	{
@@ -207,11 +204,18 @@ namespace Utils
 		return outStr;
 	}
 
-	inline void RemoveString(std::string& str, std::string toRemove)
+
+	inline bool ExistsFile(const std::string fileName)
 	{
-		std::string::size_type i = str.find(toRemove);
-		if (i != std::string::npos)
-			str.erase(i, toRemove.length());
+		std::ifstream file;
+		file.open(fileName);
+		if (file.fail())
+		{
+			file.close();
+			return false;
+		}
+		file.close();
+		return true;
 	}
 
 	inline std::vector<std::string> GetFilesInDirectory(const std::string& directory)
