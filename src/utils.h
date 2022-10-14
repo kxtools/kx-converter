@@ -209,9 +209,9 @@ namespace Utils
 
 	inline void RemoveString(std::string& str, std::string toRemove)
 	{
-		const int dot = str.rfind(toRemove);
-		if (dot != std::string::npos)
-			str.resize(dot);
+		std::string::size_type i = str.find(toRemove);
+		if (i != std::string::npos)
+			str.erase(i, toRemove.length());
 	}
 
 	inline std::vector<std::string> GetFilesInDirectory(const std::string& directory)
