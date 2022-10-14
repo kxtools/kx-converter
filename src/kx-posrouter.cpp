@@ -77,7 +77,7 @@ int main()
 		// https://json.nlohmann.me/home/exceptions/#jsonexceptiontype_error316
 		// https://json.nlohmann.me/api/basic_json/error_handler_t/#examples
 		std::ofstream f(file, std::ios_base::trunc | std::ios_base::out);
-		f << finalJson.dump(4, ' ', false, nlohmann::json::error_handler_t::ignore) << std::endl;
+		f << finalJson.dump(2, ' ', false, nlohmann::json::error_handler_t::ignore) << std::endl;
 	}
 	spdlog::info("Program took {} {} to execute",
 	             std::chrono::duration_cast<std::chrono::seconds>(std::chrono::high_resolution_clock::now() - t1).
