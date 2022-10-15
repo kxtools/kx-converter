@@ -8,38 +8,11 @@
 #include "models.h"
 #include "utils.h"
 
-struct ComInit
-{
-	ComInit() { CoInitialize(nullptr); }
-	~ComInit() { CoUninitialize(); }
-};
-
-
 int main()
 {
-	std::string srcDirectory;
 	spdlog::info("Enter the path of the maps directory: ");
+	std::string srcDirectory = Utils::BrowseDirectory();
 
-	// Initialize COM to be able to use classes like IFileOpenDialog.
-	ComInit com;
-	// Create an instance of IFileOpenDialog.
-	CComPtr<IFileOpenDialog> pFolderDlg;
-	pFolderDlg.CoCreateInstance(CLSID_FileOpenDialog);
-	// Set options for a filesystem folder picker dialog.
-	FILEOPENDIALOGOPTIONS opt{};
-	pFolderDlg->GetOptions(&opt);
-	pFolderDlg->SetOptions(opt | FOS_PICKFOLDERS | FOS_PATHMUSTEXIST | FOS_FORCEFILESYSTEM);
-	// Show the dialog modally.
-	if (SUCCEEDED(pFolderDlg->Show(nullptr)))
-	{
-		// Get the path of the selected folder and output it to the console.
-		CComPtr<IShellItem> pSelectedItem;
-		pFolderDlg->GetResult(&pSelectedItem);
-		CComHeapPtr<wchar_t> pPath;
-		pSelectedItem->GetDisplayName(SIGDN_FILESYSPATH, &pPath);
-		std::wstring wpPath = pPath.m_pData;
-		srcDirectory = std::string(wpPath.begin(), wpPath.end());
-	}
 	// Uses filesystem to convert all \\ to /
 	srcDirectory = std::filesystem::path(srcDirectory).generic_string();
 	if (!std::filesystem::is_directory(srcDirectory))
@@ -70,7 +43,7 @@ int main()
 		return 1;
 	}
 
-	progressbar bar(filesInDir.size() - 1);
+	progressbar bar(static_cast<int>(filesInDir.size()) - 1);
 	bool canUpdateBar = true;
 	for (const std::string fileName : filesInDir)
 	{

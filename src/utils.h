@@ -5,6 +5,12 @@
 #include <iostream>
 #include "spdlog/spdlog.h"
 
+struct ComInit
+{
+	ComInit() { CoInitialize(nullptr); }
+	~ComInit() { CoUninitialize(); }
+};
+
 namespace Utils
 {
 	static int formatError = 0;
@@ -238,5 +244,30 @@ namespace Utils
 		}
 		file.close();
 		return true;
+	}
+
+	inline std::string BrowseDirectory()
+	{
+		// Initialize COM to be able to use classes like IFileOpenDialog.
+		ComInit com;
+		// Create an instance of IFileOpenDialog.
+		CComPtr<IFileOpenDialog> pFolderDlg;
+		pFolderDlg.CoCreateInstance(CLSID_FileOpenDialog);
+		// Set options for a filesystem folder picker dialog.
+		FILEOPENDIALOGOPTIONS opt{};
+		pFolderDlg->GetOptions(&opt);
+		pFolderDlg->SetOptions(opt | FOS_PICKFOLDERS | FOS_PATHMUSTEXIST | FOS_FORCEFILESYSTEM);
+		// Show the dialog modally.
+		if (SUCCEEDED(pFolderDlg->Show(nullptr)))
+		{
+			// Get the path of the selected folder and output it to the console.
+			CComPtr<IShellItem> pSelectedItem;
+			pFolderDlg->GetResult(&pSelectedItem);
+			CComHeapPtr<wchar_t> pPath;
+			pSelectedItem->GetDisplayName(SIGDN_FILESYSPATH, &pPath);
+			std::wstring wpPath = pPath.m_pData;
+			return std::string(wpPath.begin(), wpPath.end());
+		}
+		return "";
 	}
 };
