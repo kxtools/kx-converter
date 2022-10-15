@@ -14,7 +14,7 @@ int main()
 	std::string srcDirectory = Utils::BrowseDirectory();
 
 	// Uses filesystem to convert all \\ to /
-	srcDirectory = std::filesystem::path(srcDirectory).generc_string();
+	srcDirectory = std::filesystem::path(srcDirectory).generic_string();
 	if (!std::filesystem::is_directory(srcDirectory))
 	{
 		spdlog::error("Path '{}' is invalid", srcDirectory);
@@ -52,7 +52,7 @@ int main()
 
 		// Get mid path - the path between srcDir and fileName
 		std::string midPath = fileName;
-		Utils::RemoveString(midPath, std::filesystem::path(fileName).filename().generc_string());
+		Utils::RemoveString(midPath, std::filesystem::path(fileName).filename().generic_string());
 		Utils::RemoveString(midPath, srcDirectory);
 
 		// Create the dir for midPath if it doesn't exist
@@ -67,6 +67,8 @@ int main()
 
 		if (canUpdateBar)
 			bar.update();
+		else
+			spdlog::info("Stopped");
 
 		nlohmann::ordered_json resultCoords;
 		std::vector<Models::Coordinates> coords;
@@ -89,7 +91,7 @@ int main()
 		vector_to_json(resultCoords, coords);
 		Models::Map newMap;
 		newMap.coords = resultCoords;
-		newMap.name = std::filesystem::path(fileName).stem().generc_string();
+		newMap.name = std::filesystem::path(fileName).stem().generic_string();
 		to_json(finalJson, newMap);
 
 		// Dump into a file while ignoring utf-8
