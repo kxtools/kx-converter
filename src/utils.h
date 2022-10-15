@@ -116,16 +116,23 @@ namespace Utils
 		// Fixes possible problem with \t
 		const std::vector<std::string> lineSplit = split(line, "\t");
 		std::vector<double> outVec(3);
+		std::vector<double> errVec(4);
 		// if it's more than two -> there is more \t if it's less than two -> there is either only 1 \t and then 1 thing before and 0 after or there isn't \t
 		if (lineSplit.size() != 2)
 		{
 			std::cout << std::endl;
 			spdlog::critical("While reading file '{}' on the line '{}' a formatting error was found", file, line);
 			formatError++;
-			std::vector<double> errVec(4);
 			return errVec;
 		}
 		const std::vector<std::string> splitters = split(lineSplit[1], " ");
+		if(splitters.size() != 4)
+		{
+			std::cout << std::endl;
+			spdlog::critical("Found unwanted space while reading file '{}' on the line '{}'", file, line);
+			formatError++;
+			return errVec;
+		}
 		if (!splitters.empty())
 		{
 			for (size_t i = 1; i < splitters.size(); i++)
