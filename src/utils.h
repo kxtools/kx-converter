@@ -30,7 +30,9 @@ namespace Utils
 			getline(file, line);
 		}
 		file.close();
-		return currentLine - 1; // ignore last space
+		if (line.empty())
+		    return currentLine - 1;
+		return currentLine - 1;
 	}
 
 	inline bool ReadLine(const std::string fileName, int lineNum, std::string& outLine)
