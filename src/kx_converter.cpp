@@ -1,16 +1,45 @@
 ﻿#include <filesystem>
+#include <Windows.h>
+#include <ShlObj.h>
+#include <atlbase.h>
 #include <chrono>
 #include "../libs/nlohmann/json.hpp"
 #include "progress_bar.h"
 #include "models.h"
 #include "utils.h"
 
+struct ComInit
+{
+	ComInit() { CoInitialize(nullptr); }
+	~ComInit() { CoUninitialize(); }
+};
+
+
 int main()
 {
 	std::string srcDirectory;
-	spdlog::info("Enter the path of the source directory: ");
-	std::getline(std::cin, srcDirectory);
+	spdlog::info("Enter the path of the maps directory: ");
 
+	// Initialize COM to be able to use classes like IFileOpenDialog.
+	ComInit com;
+	// Create an instance of IFileOpenDialog.
+	CComPtr<IFileOpenDialog> pFolderDlg;
+	pFolderDlg.CoCreateInstance(CLSID_FileOpenDialog);
+	// Set options for a filesystem folder picker dialog.
+	FILEOPENDIALOGOPTIONS opt{};
+	pFolderDlg->GetOptions(&opt);
+	pFolderDlg->SetOptions(opt | FOS_PICKFOLDERS | FOS_PATHMUSTEXIST | FOS_FORCEFILESYSTEM);
+	// Show the dialog modally.
+	if (SUCCEEDED(pFolderDlg->Show(nullptr)))
+	{
+		// Get the path of the selected folder and output it to the console.
+		CComPtr<IShellItem> pSelectedItem;
+		pFolderDlg->GetResult(&pSelectedItem);
+		CComHeapPtr<wchar_t> pPath;
+		pSelectedItem->GetDisplayName(SIGDN_FILESYSPATH, &pPath);
+		std::wstring wpPath = pPath.m_pData;
+		srcDirectory = std::string(wpPath.begin(), wpPath.end());
+	}
 	// Uses filesystem to convert all \\ to /
 	srcDirectory = std::filesystem::path(srcDirectory).generic_string();
 	if (!std::filesystem::is_directory(srcDirectory))
@@ -20,6 +49,7 @@ int main()
 		std::getchar();
 		return 1;
 	}
+	std::cout << srcDirectory << std::endl;
 
 	// Get directory path and then add "-converted" at the end
 	std::string directoryPath = srcDirectory.substr(0, srcDirectory.find_last_of("\\/"));
@@ -32,7 +62,7 @@ int main()
 
 	// Loop trough all files in the src dir
 	const std::vector<std::string> filesInDir = Utils::GetFilesInDirectory(srcDirectory);
-	if(std::filesystem::is_empty(srcDirectory))
+	if (std::filesystem::is_empty(srcDirectory))
 	{
 		spdlog::error("Directory '{}' is empty", srcDirectory);
 		std::cout << "Press any key to close this window...";
@@ -53,7 +83,7 @@ int main()
 		Utils::RemoveString(midPath, srcDirectory);
 
 		// Create the dir for midPath if it doesn't exist
-		if (!std::filesystem::is_directory(directoryPath + midPath) || 
+		if (!std::filesystem::is_directory(directoryPath + midPath) ||
 			!std::filesystem::exists(directoryPath + midPath))
 			std::filesystem::create_directories(directoryPath + midPath);
 
@@ -62,7 +92,7 @@ int main()
 		if (!Utils::CreateNewFile(file))
 			break;
 
-		if(canUpdateBar)
+		if (canUpdateBar)
 			bar.update();
 
 		nlohmann::ordered_json resultCoords;
