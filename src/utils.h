@@ -32,7 +32,7 @@ namespace Utils
 		file.close();
 		if (line.empty())
 		    return currentLine - 1;
-		return currentLine - 1;
+		return currentLine;
 	}
 
 	inline bool ReadLine(const std::string fileName, int lineNum, std::string& outLine)
