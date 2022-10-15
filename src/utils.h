@@ -119,10 +119,11 @@ namespace Utils
 		// if it's more than two -> there is more \t if it's less than two -> there is either only 1 \t and then 1 thing before and 0 after or there isn't \t
 		if (lineSplit.size() != 2)
 		{
-			spdlog::critical("{}, {}", line, file);
+			std::cout << std::endl;
+			spdlog::critical("While reading file '{}' on the line '{}' a formatting error was found", file, line);
 			formatError++;
-			spdlog::error("{}", formatError);
-			return outVec;
+			std::vector<double> errVec(4);
+			return errVec;
 		}
 		const std::vector<std::string> splitters = split(lineSplit[1], " ");
 		if (!splitters.empty())
@@ -151,13 +152,9 @@ namespace Utils
 		// Split the checkpoint number from the name and position, 2 elements: num, names & xyz
 		std::string name;
 		const std::vector<std::string> lineSplit = split(line, "\t");
+		// Formatting error
 		if (lineSplit.size() != 2)
-		{
-			spdlog::critical("{}, {}", line);
-			formatError++;
-			spdlog::error("{}", formatError);
 			return name;
-		}
 		// Split by spaces to have 4 elements: name, x, y, z
 		name = split(lineSplit[1], " ")[0];
 		// Remove the ' from the 'name'
@@ -171,13 +168,9 @@ namespace Utils
 		// Split the checkpoint number from the name and position, 2 elements: num, names & xyz
 		const std::vector<std::string> lineSplit = split(line, "\t");
 		int checkpoint = std::stoi(lineSplit[0]);
+		// Formatting error
 		if (lineSplit.size() != 2)
-		{
-			spdlog::critical("{}, {}", line);
-			formatError++;
-			spdlog::error("{}", formatError);
 			return checkpoint;
-		}
 		return checkpoint;
 	}
 

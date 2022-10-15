@@ -1,6 +1,7 @@
 ﻿#include <filesystem>
 #include <chrono>
 #include "../libs/nlohmann/json.hpp"
+#include "progress_bar.h"
 #include "models.h"
 #include "utils.h"
 
@@ -15,21 +16,35 @@ int main()
 	if (!std::filesystem::is_directory(srcDirectory))
 	{
 		spdlog::error("Path '{}' is invalid", srcDirectory);
+		std::cout << "Press any key to close this window...";
+		std::getchar();
 		return 1;
 	}
 
-	// Get directory path and remove the last dir, then append new_maps
+	// Get directory path and then add "-converted" at the end
 	std::string directoryPath = srcDirectory.substr(0, srcDirectory.find_last_of("\\/"));
-	directoryPath.append("/new_maps");
+	std::string srcDirName = srcDirectory;
+	Utils::RemoveString(srcDirName, directoryPath);
+	directoryPath += srcDirName + "-converted";
 	std::filesystem::create_directories(directoryPath);
 
 	auto t1 = std::chrono::high_resolution_clock::now();
 
 	// Loop trough all files in the src dir
 	const std::vector<std::string> filesInDir = Utils::GetFilesInDirectory(srcDirectory);
+	if(std::filesystem::is_empty(srcDirectory))
+	{
+		spdlog::error("Directory '{}' is empty", srcDirectory);
+		std::cout << "Press any key to close this window...";
+		std::getchar();
+		return 1;
+	}
+
+	progressbar bar(filesInDir.size() - 1);
+	bool canUpdateBar = true;
 	for (const std::string fileName : filesInDir)
 	{
-		if (fileName.find("map_names.json") != std::string::npos)
+		if (std::filesystem::path(fileName).extension() != ".txt")
 			continue;
 
 		// Get mid path - the path between srcDir and fileName
@@ -47,6 +62,8 @@ int main()
 		if (!Utils::CreateNewFile(file))
 			break;
 
+		if(canUpdateBar)
+			bar.update();
 
 		nlohmann::ordered_json resultCoords;
 		std::vector<Models::Coordinates> coords;
@@ -58,11 +75,10 @@ int main()
 		{
 			// Get position and convert the Y & Z coordinate
 			const std::vector<double> pos = Utils::GetPosition(line, fileName);
-			if (pos.empty())
-				return 1;
+			std::vector<double> errVec(4);
+			if (pos == errVec)
+				canUpdateBar = false;
 			const std::vector<double> newPos = Utils::SwitchYZ(pos);
-			if (newPos.empty())
-				return 1;
 			const std::string name = Utils::GetCheckpointName(line);
 			coords.push_back(Models::Coordinates{name, newPos[0], newPos[1], newPos[2]});
 		}
@@ -79,10 +95,15 @@ int main()
 		std::ofstream f(file, std::ios_base::trunc | std::ios_base::out);
 		f << finalJson.dump(2, ' ', false, nlohmann::json::error_handler_t::ignore) << std::endl;
 	}
+	std::cout << std::endl;
+	if (Utils::formatError > 0)
+		spdlog::error("Found {} formatting errors", Utils::formatError);
 	spdlog::info("Program took {} {} to execute",
 	             std::chrono::duration_cast<std::chrono::seconds>(std::chrono::high_resolution_clock::now() - t1).
 	             count(),
 	             "seconds");
+	std::cout << "Press any key to close this window...";
+	std::getchar();
 	return 0;
 }
 
