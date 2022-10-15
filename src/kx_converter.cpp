@@ -67,8 +67,6 @@ int main()
 
 		if (canUpdateBar)
 			bar.update();
-		else
-			spdlog::info("Stopped");
 
 		nlohmann::ordered_json resultCoords;
 		std::vector<Models::Coordinates> coords;
