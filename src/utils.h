@@ -230,7 +230,7 @@ namespace Utils
 	{
 		std::vector<std::string> out;
 		for (std::filesystem::recursive_directory_iterator i(directory), end; i != end; ++i)
-			if (!is_directory(i->path()))
+			if (!is_directory(i->path()) && i->path().extension() == ".txt")
 				out.push_back(i->path().generic_string());
 		return out;
 	}
