@@ -112,11 +112,3 @@ int main()
 	std::getchar();
 	return 0;
 }
-
-/* TODO: 0. Think about precision, it has more decimal places than needed ✅
- * TODO: 1. Convert to CMake ✅
- * TODO: 2. Use classes/namespaces ✅
- * TODO: 3. Make it choose a whole folder ✅
- * TODO: 4. Create a new folder with the changed files ✅
- * TODO: 5. Change the files to json ✅
-*/
