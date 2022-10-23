@@ -17,6 +17,7 @@ find_package(spdlog)
 
 set(other_files
 	libs/nlohmann/json.hpp
+    data/icon.rc
 )
 
 add_executable(${PROJECT_NAME} ${SOURCE} ${other_files})
