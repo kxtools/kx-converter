@@ -43,8 +43,11 @@ int main()
 		return 1;
 	}
 
-	progressbar bar(static_cast<int>(filesInDir.size()) - 1);
+	int size = static_cast<int>(filesInDir.size()) - 1;
+	progressbar bar(size);
 	bool canUpdateBar = true;
+	if (!size)
+		canUpdateBar = false;
 	for (const std::string fileName : filesInDir)
 	{
 		if (std::filesystem::path(fileName).extension() != ".txt")
@@ -102,9 +105,9 @@ int main()
 	if (Utils::formatError > 0)
 		spdlog::error("Found {} formatting errors", Utils::formatError);
 	spdlog::info("Program took {} {} to execute",
-	             std::chrono::duration_cast<std::chrono::seconds>(std::chrono::high_resolution_clock::now() - t1).
+	             std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - t1).
 	             count(),
-	             "seconds");
+	             "ms");
 	std::cout << "Press any key to close this window...";
 	std::getchar();
 	return 0;
