@@ -1,5 +1,9 @@
 ﻿# KX Map Converter
 
+<p align="center">
+  <img src="data/images/kxconverter_logo.png" alt="KX Converter Logo">
+</p>
+
 **A robust, command-line utility for converting legacy Guild Wars 2 KX-Maps `.txt` files to a clean, modern `.json` format.**
 
 This tool is designed for developers, data managers, and route creators who need to modernize old map data into a structured, easily parsable format for use in other applications or tools.
@@ -35,7 +39,7 @@ For years, KX-Maps were stored in an inconsistent `.txt` format with swapped Y/Z
 
 ### Using the Executable
 
-1.  **Download:** Grab the latest `kx-converter-win-x64.zip` from the [GitHub Releases page](https://github.com/YOUR_USERNAME/kx-converter/releases). *(Note: This link is a placeholder for your future repository)*.
+1.  **Download:** Grab the latest `kx-converter-win-x64.zip` from the [GitHub Releases page](https://github.com/kxtools/kx-converter/releases). *(Note: This link is a placeholder for your future repository)*.
 2.  **Unzip:** Extract the downloaded `.zip` file to a folder of your choice (e.g., `C:\Tools\KXConverter`).
 3.  **Run from Command Line:** Open a terminal (Command Prompt, PowerShell, or Windows Terminal) and navigate to the folder where you extracted the files.
     ```powershell
@@ -125,7 +129,7 @@ The converter transforms messy `.txt` lines into clean JSON objects.
     *   [CMake](https://cmake.org/download/) (version 3.14 or higher).
 2.  **Clone the Repository:**
     ```bash
-    git clone https://github.com/YOUR_USERNAME/kx-converter.git
+    git clone https://github.com/kxtools/kx-converter.git
     cd kx-converter
     ```
 3.  **Configure and Build with CMake:**
@@ -144,7 +148,7 @@ The converter transforms messy `.txt` lines into clean JSON objects.
 
 We welcome contributions from the community!
 
-*   **Report Bugs:** Found a file that doesn't parse correctly? Please open an issue on our [GitHub Issues page](https://github.com/YOUR_USERNAME/kx-converter/issues) and provide the problematic `.txt` file or line if possible.
+*   **Report Bugs:** Found a file that doesn't parse correctly? Please open an issue on our [GitHub Issues page](https://github.com/kxtools/kx-converter/issues) and provide the problematic `.txt` file or line if possible.
 *   **Suggest Features:** Have an idea for a new feature or an improvement? Open an issue to discuss it!
 *   **Code Contributions:** If you'd like to contribute code, please open an issue first to discuss your planned changes. This helps avoid duplicate work and ensures alignment with the project's goals.
 
