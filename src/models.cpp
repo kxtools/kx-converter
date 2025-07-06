@@ -1,29 +1,24 @@
-#include "models.h"
+#include "kx_converter/models.h"
 
-namespace Models
-{
-	void vector_to_json(nlohmann::ordered_json& j, std::vector<Coordinates> coords)
-	{
-		for(const Coordinates coord : coords)
-		{
-			nlohmann::ordered_json parsedCoords = {
-				{"Name", coord.name},
-				{"X", coord.x},
-				{"Y", coord.y},
-				{"Z", coord.z}
-			};
-			j.push_back(parsedCoords);
-		}
-	}
+namespace kx_converter::Models {
 
-	void to_json(nlohmann::ordered_json& j, const Map& map)
-	{
-		j = nlohmann::ordered_json{ {"Name", map.name}, {"Coordinates", map.coords} };
-	}
+    void to_json(nlohmann::json& j, const Coordinates& c) {
+        j = nlohmann::json{
+            {"Name", c.name},
+            {"X", c.x},
+            {"Y", c.y},
+            {"Z", c.z}
+        };
+    }
 
-	void from_json(const nlohmann::ordered_json& j, Map& map)
-	{
-		j.at("Name").get_to(map.name);
-		j.at("Coordinates").get_to(map.coords);
-	}
-}
+    // --- CHANGE THIS FUNCTION TO MATCH THE NEW FORMAT ---
+    void to_json(nlohmann::json& j, const Map& m) {
+        j = nlohmann::json{
+            {"Name", m.name},
+            {"Author", m.author},
+            {"Coordinates", m.coordinates}
+        };
+    }
+
+
+} // namespace kx_converter::Models
