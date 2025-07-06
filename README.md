@@ -4,6 +4,12 @@
   <img src="data/images/kxconverter_logo.png" alt="KX Converter Logo">
 </p>
 
+<p align="center">
+  <a href="https://github.com/kxtools/kx-converter/releases"><img src="https://img.shields.io/github/v/release/kxtools/kx-converter?style=for-the-badge&logo=github" alt="Latest Release"></a>
+  <a href="https://github.com/kxtools/kx-converter/blob/main/LICENSE"><img src="https://img.shields.io/github/license/kxtools/kx-converter?style=for-the-badge" alt="License"></a>
+  <img src="https://img.shields.io/badge/C++-17-blue.svg?style=for-the-badge&logo=cplusplus" alt="C++17">
+</p>
+
 **A robust, command-line utility for converting legacy Guild Wars 2 KX-Maps `.txt` files to a clean, modern `.json` format.**
 
 This tool is designed for developers, data managers, and route creators who need to modernize old map data into a structured, easily parsable format for use in other applications or tools.
@@ -163,3 +169,11 @@ This project wouldn't be possible without these incredible open-source libraries
 *   **[nlohmann/json](https://github.com/nlohmann/json):** For making JSON in C++ a breeze.
 *   **[Indicators](https://github.com/p-ranav/indicators):** For the clean and modern progress bars.
 *   **[GoogleTest](https://github.com/google/googletest):** For robust unit testing.
+
+## Star History
+
+<p align="center">
+  <a href="https://star-history.com/#kxtools/kx-converter&Date">
+    <img src="https://api.star-history.com/svg?repos=kxtools/kx-converter&type=Date" alt="Star History Chart">
+  </a>
+</p>
