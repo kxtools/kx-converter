@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
 project(kx-converter LANGUAGES CXX)
 
-# We will set the C++ standard to 17 to match the code.
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -42,8 +41,6 @@ if(WIN32)
     target_sources(kx-converter PRIVATE data/icon.rc)
 endif()
 
-# --- THE DEFINITIVE RUNTIME LIBRARY FIX ---
-# We will now manually add the correct compiler flags to every single one of our targets.
 # This is a low-level, direct command that cannot be overridden by IDE settings.
 # /MT  = Static Release Runtime
 # /MTd = Static Debug Runtime
@@ -57,8 +54,6 @@ if(MSVC)
       $<$<CONFIG:Debug>:/MTd> $<$<CONFIG:Release>:/MT> $<$<CONFIG:RelWithDebInfo>:/MT> $<$<CONFIG:MinSizeRel>:/MT>
   )
 endif()
-# --- END OF FIX ---
-
 
 # --- Testing ---
 option(BUILD_TESTING "Build the tests" ON)
@@ -70,8 +65,7 @@ if(BUILD_TESTING)
 
     add_subdirectory(test) # This defines the parser_test target
 
-    # --- APPLY THE SAME EXPLICIT FIX TO THE TEST EXECUTABLE ---
-    # This is the step that was missing and caused the final error.
+    # --- Explicitly set MT/d ---
     if(MSVC)
       target_compile_options(parser_test PRIVATE
           $<$<CONFIG:Debug>:/MTd> $<$<CONFIG:Release>:/MT> $<$<CONFIG:RelWithDebInfo>:/MT> $<$<CONFIG:MinSizeRel>:/MT>

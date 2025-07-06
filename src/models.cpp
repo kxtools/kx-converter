@@ -11,7 +11,6 @@ namespace kx_converter::Models {
         };
     }
 
-    // --- CHANGE THIS FUNCTION TO MATCH THE NEW FORMAT ---
     void to_json(nlohmann::json& j, const Map& m) {
         j = nlohmann::json{
             {"Name", m.name},
