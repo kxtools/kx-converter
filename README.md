@@ -4,23 +4,23 @@
   <img src="data/images/kxconverter_logo.png" alt="KX Converter Logo">
 </p>
 
+**From the creators of KX Tools, KX Map Converter is a high-performance command-line utility for converting legacy Guild Wars 2 KX-Maps `.txt` files to a clean, modern `.json` format. Explore all our projects at [kxtools.xyz](https://kxtools.xyz).**
+
 <p align="center">
   <a href="https://github.com/kxtools/kx-converter/releases"><img src="https://img.shields.io/github/v/release/kxtools/kx-converter?style=for-the-badge&logo=github" alt="Latest Release"></a>
   <a href="https://github.com/kxtools/kx-converter/blob/main/LICENSE"><img src="https://img.shields.io/github/license/kxtools/kx-converter?style=for-the-badge" alt="License"></a>
   <img src="https://img.shields.io/badge/C++-17-blue.svg?style=for-the-badge&logo=cplusplus" alt="C++17">
 </p>
 
-**A robust, command-line utility for converting legacy Guild Wars 2 KX-Maps `.txt` files to a clean, modern `.json` format.**
-
-This tool is designed for developers, data managers, and route creators who need to modernize old map data into a structured, easily parsable format for use in other applications or tools.
+This tool is designed for developers, data managers, and route creators who need to modernize old map data into a structured, easily parsable format for use in applications like **[KX Map Studio](https://github.com/kxtools/kx-map-studio)** or other custom tools.
 
 ---
 
 ## What is KX Map Converter?
 
-For years, KX-Maps were stored in an inconsistent `.txt` format with swapped Y/Z values.
+For years, Guild Wars 2 map routes were stored in an inconsistent `.txt` format, with swapped Y/Z coordinate values.
 
-**KX Map Converter** is a high-performance C++ utility that solves this problem. It reads legacy `.txt` files, intelligently parses each line to extract checkpoint data, and converts it into a clean, well-structured `.json` file. It's built to handle the messy, real-world data found in user-generated files.  
+**KX Map Converter** is a high-performance C++ utility that solves this problem. It reads legacy `.txt` files, intelligently parses each line to extract checkpoint data, and converts it into a clean, well-structured `.json` file. It's built to handle the messy, real-world data found in user-generated files.
 
 ---
 
@@ -37,7 +37,7 @@ For years, KX-Maps were stored in an inconsistent `.txt` format with swapped Y/Z
 *   📝 **Author Metadata:** Embed an author's name directly into the output JSON files.
 *   ✨ **Clean JSON Output:** Generates human-readable and machine-parsable JSON, perfect for use in web apps, overlays, or other developer tools.
 *   🛡️ **Graceful Error Handling:** Identifies and reports parsing errors on a per-line basis, skipping problematic files to ensure the batch process can complete.
-*   PROGRESS **User-Friendly Progress Bar:** A clean progress bar shows the status of the conversion process for large directories.
+*   **User-Friendly Progress Bar:** A clean progress bar shows the status of the conversion process for large directories.
 
 ---
 
@@ -45,13 +45,12 @@ For years, KX-Maps were stored in an inconsistent `.txt` format with swapped Y/Z
 
 ### Using the Executable
 
-1.  **Download:** Grab the latest `kx-converter-win-x64.zip` from the [GitHub Releases page](https://github.com/kxtools/kx-converter/releases). *(Note: This link is a placeholder for your future repository)*.
-2.  **Unzip:** Extract the downloaded `.zip` file to a folder of your choice (e.g., `C:\Tools\KXConverter`).
-3.  **Run from Command Line:** Open a terminal (Command Prompt, PowerShell, or Windows Terminal) and navigate to the folder where you extracted the files.
+1.  **Download:** Grab the latest `kx-converter.exe` from the [GitHub Releases page](https://github.com/kxtools/kx-converter/releases).
+2.  **Run from Command Line:** Open a terminal (Command Prompt, PowerShell, or Windows Terminal) and navigate to the folder where you extracted the files.
     ```powershell
     cd C:\Tools\KXConverter
     ```
-4.  **Start Converting!** Run `kx-converter.exe` with the required input and output paths.
+3.  **Start Converting!** Run `kx-converter.exe` with the required input and output paths.
 
 ### Usage
 
@@ -75,14 +74,14 @@ This will search `C:\my-old-maps` and all of its subfolders for `.txt` files, pr
 
 ### Command-Line Options
 
-| Flag | Alias | Description | Required |
-| :--- | :--- | :--- | :--- |
-| `--input <path>` | `-i` | Path to the input directory containing `.txt` files. | **Yes** |
-| `--output <path>` | `-o` | Path to the output directory for converted `.json` files. | **Yes** |
-| `--author <name>` | | Name of the author to add to the JSON file. | No |
-| `--recursive` | | Process the input directory recursively. | No |
-| `--overwrite` | | Allow overwriting existing files in the output directory. | No |
-| `--verbose` | `-v` | Enable detailed logging output for debugging. | No |
+| Flag              | Alias | Description                                                  | Required |
+| :---------------- | :---- | :----------------------------------------------------------- | :------- |
+| `--input <path>`  | `-i`  | Path to the input directory containing `.txt` files.         | **Yes**  |
+| `--output <path>` | `-o`  | Path to the output directory for converted `.json` files.    | **Yes**  |
+| `--author <name>` |       | Name of the author to add to the JSON file.                  | No       |
+| `--recursive`     |       | Process the input directory recursively.                     | No       |
+| `--overwrite`     |       | Allow overwriting existing files in the output directory.    | No       |
+| `--verbose`       | `-v`  | Enable detailed logging output for debugging.                | No       |
 
 ---
 
@@ -91,6 +90,7 @@ This will search `C:\my-old-maps` and all of its subfolders for `.txt` files, pr
 The converter transforms messy `.txt` lines into clean JSON objects.
 
 **Input (`some_map.txt`)**
+
 ```
 1	'Start Point' 100.5 200.0 -350.75
 2   Checkpoint_2  110.0, 225.3, -340.0
@@ -98,6 +98,7 @@ The converter transforms messy `.txt` lines into clean JSON objects.
 ```
 
 **Output (`some_map.json`)**
+
 ```json
 {
   "Author": "MyName",
@@ -124,7 +125,18 @@ The converter transforms messy `.txt` lines into clean JSON objects.
   "Name": "some_map"
 }
 ```
+
 > **Note:** The `Y` and `Z` coordinates are intentionally swapped in the output JSON.
+
+---
+
+## Community & Support
+
+Join our community to ask questions, give feedback, or just hang out!
+
+*   🌐 **Our Website:** Explore our other projects at [kxtools.xyz](https://kxtools.xyz)
+*   💬 **Discord:** Connect with us and other users: [https://discord.gg/z92rnB4kHm](https://discord.gg/z92rnB4kHm)
+*   🐙 **GitHub:** Report issues, suggest features, or contribute code on the [Issues Page](https://github.com/kxtools/kx-converter/issues).
 
 ---
 
@@ -176,4 +188,4 @@ This project wouldn't be possible without these incredible open-source libraries
   <a href="https://star-history.com/#kxtools/kx-converter&Date">
     <img src="https://api.star-history.com/svg?repos=kxtools/kx-converter&type=Date" alt="Star History Chart">
   </a>
-</p> 
+</p>
